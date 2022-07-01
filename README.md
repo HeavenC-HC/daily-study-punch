@@ -1,2 +1,2 @@
 # daily-study-punch
-每日学习打卡
+记录每日学习打卡
