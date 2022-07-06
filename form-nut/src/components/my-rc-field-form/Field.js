@@ -4,8 +4,20 @@ import FieldContext from './FieldContext';
 export default class Field extends Component {
   static contextType = FieldContext;
 
+
+componentDidMount(){
+  this.unregister = this.context.registerFieldEntities(this)
+}
+
+componentWillUnmount(){
+  this.unregister();
+}
+
+  onStoreChange = () => {
+    this.forceUpdate();
+  }
+
   getControlled = () => {
-    console.info(this.context)
     const {getFieldValue, setFieldsValue} = this.context;
     const {name} = this.props;
     return {
@@ -15,7 +27,6 @@ export default class Field extends Component {
         setFieldsValue({
           [name]: newValue
         })
-        console.info('newValue', newValue)
       }
     }
   }

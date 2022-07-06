@@ -4,7 +4,25 @@ import { useRef } from "react";
 class FormStore {
     constructor(){
         this.store = {};
+        this.fieldEntities = [];
+        this.callbacks = {};
+
     }
+
+    setCallbacks = callbacks => {
+        this.callbacks = { ...this.callbacks, ...callbacks,}
+    }
+
+    //注册与取消注册
+    // 订阅与取消订阅
+    registerFieldEntities = entity => {
+        this.fieldEntities.push(entity)
+        return () => {
+            this.fieldEntities = this.fieldEntities.filter(item => item !== entity)
+            delete this.store[entity.props.name]
+        }
+    }
+
 
     getFieldValue = (name) => {
         return this.store[name]
@@ -14,15 +32,41 @@ class FormStore {
         return {...this.store}
     }
 
-    // setFieldValue = (name) => {
-    //     this.store[name] = 
-    //     return this.store[name]
-    // }
-
     setFieldsValue = (newStore) => {
+        //1.update store
         this.store = {
             ...this.store,
-            ...newStore
+            ...newStore,
+        }
+        //2.update Field
+        this.fieldEntities.forEach(entity=>{
+            Object.keys(newStore).forEach(k=>{
+                if(k === entity.props.name){
+                    entity.onStoreChange()
+                }
+            })
+        })
+    }
+
+    validate = () => {
+        let err = [];
+        
+        // 简版校验
+
+
+        return err;
+    }
+
+    submit = () => {
+        console.log('submit');
+        let err = this.validate();
+        const {onFinish, onFinishFailed} = this.callbacks;
+        if(err.length === 0){
+            // 校验通过
+            onFinish(this.getFieldsValue())
+        }else{
+            // 校验不通过
+            onFinishFailed(err, this.getFieldsValue())
         }
     }
 
@@ -31,8 +75,12 @@ class FormStore {
             getFieldValue: this.getFieldValue,
             getFieldsValue: this.getFieldsValue,
             setFieldsValue: this.setFieldsValue,
+            registerFieldEntities: this.registerFieldEntities,
+            submit: this.submit,
+            setCallbacks: this.setCallbacks,
         }
     }
+
 }
 
 function useForm(props) {

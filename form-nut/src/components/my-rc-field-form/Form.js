@@ -1,7 +1,17 @@
 import FieldContext from "./FieldContext";
-function Form({children, form}) {
+function Form({children, form, onFinish, onFinishFailed}) {
+    form.setCallbacks({
+        onFinish,
+        onFinishFailed,
+    })
     return (
-        <form>
+        <form
+            onSubmit={e => {
+                e.preventDefault();
+                form.submit();
+            }}
+            
+        >
             <FieldContext.Provider value={form} >
                 {children}
             </FieldContext.Provider>
