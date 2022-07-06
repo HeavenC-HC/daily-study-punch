@@ -1,9 +1,11 @@
-import React, {useEffect} from 'react';
-import Form, {Field} from 'rc-field-form';
+// import Form, { Field } from 'rc-field-form';
+import { useEffect } from 'react';
 import Input from "../components/Input";
+import Form, { Field } from '../components/my-rc-field-form';
 
 const nameRules = { required: true, message: "请输入姓名！" };
 const passworRules = { required: true, message: "请输入密码！" };
+
 function MyRCFieldForm(props) {
     const [form] = Form.useForm();
 
@@ -20,7 +22,6 @@ function MyRCFieldForm(props) {
         console.log("form", form); //sy-log
         // form.setFieldsValue({ username: "default" });
     }, []);
-
     return (
         <div>
             <h3>MyRCFieldForm</h3>
