@@ -1,7 +1,6 @@
-import { cloneElement, Component } from 'react';
+import React, { cloneElement, Component, useContext, useLayoutEffect, useReducer } from 'react';
 import FieldContext from './FieldContext';
-
-export default class Field extends Component {
+/* export default class Field extends Component {
   static contextType = FieldContext;
 
 
@@ -36,3 +35,38 @@ componentWillUnmount(){
     return returnChildren;
   }
 }
+
+ */
+
+
+
+function Field(props) {
+  const {children, name} = props;
+  const {getFieldValue, setFieldsValue, registerFieldEntities} = useContext(FieldContext);
+  const [, forceUpdate] = useReducer(x => x + 1, 0)
+
+
+  useLayoutEffect(()=>{
+    const unregister = registerFieldEntities({props, onStoreChange: forceUpdate})
+
+    return () => {
+      unregister();
+    }
+  }, [])
+
+
+  const getControlled = () => {
+    return {
+      value: getFieldValue(name), //"omg", // get state
+      onChange: (e) => {
+        const newValue = e.target.value;
+        // set state
+        setFieldsValue({[name]: newValue});
+      },
+    };
+  };
+  const returnChildNode = React.cloneElement(children, getControlled());
+  return returnChildNode;
+}
+
+export default Field;

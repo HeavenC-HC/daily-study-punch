@@ -52,7 +52,14 @@ class FormStore {
         let err = [];
         
         // 简版校验
-
+        this.fieldEntities.forEach(entity => {
+            const {name, rules} = entity.props;
+            const value = this.getFieldValue(name);
+            let rule = rules[0]
+            if(rule && rule.required && (value === undefined || value === '')){
+                err.push({[name]: rule.message, value})
+            }
+        })
 
         return err;
     }
@@ -83,16 +90,19 @@ class FormStore {
 
 }
 
-function useForm(props) {
+function useForm(form) {
     //存值，在组件卸载之前指向的都是同一个值
     const formRef = useRef();
-    if(!formRef.current){
+
+    if (!formRef.current) {
+        if (form) {
+            formRef.current = form;
+        } else {
         const formStore = new FormStore();
         formRef.current = formStore.getForm();
+        }
     }
-    return (
-        [formRef.current]
-    );
+    return [formRef.current];
 }
 
 export default useForm;
