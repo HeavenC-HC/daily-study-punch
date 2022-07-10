@@ -98,8 +98,8 @@ function useForm(form) {
         if (form) {
             formRef.current = form;
         } else {
-        const formStore = new FormStore();
-        formRef.current = formStore.getForm();
+            const formStore = new FormStore();
+            formRef.current = formStore.getForm();
         }
     }
     return [formRef.current];

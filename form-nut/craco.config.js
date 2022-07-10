@@ -13,9 +13,9 @@ module.exports = {
         lessLoaderOptions: {
           lessOptions: {
             modifyVars: {
-              "@primary-color": "red",
-              "@border-color-base": "green",
-              "@link-color": "orange"
+              // "@primary-color": "red",
+              // "@border-color-base": "green",
+              // "@link-color": "orange"
             },
             javascriptEnabled: true
           }
