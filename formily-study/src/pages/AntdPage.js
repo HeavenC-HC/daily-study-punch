@@ -1,11 +1,8 @@
 import {
-    createForm,
-    FormProvider,
-    Field,
+    createForm, Field,
     FormConsumer,
-    FormItem,
-    Input,
-    Submit,
+    FormItem, FormProvider, Input,
+    Submit
 } from "@/which";
 
 const form = createForm();
@@ -68,7 +65,7 @@ export default function AntdPage(props) {
                 </Submit>
 
                 <div>
-                    <FormConsumer>{() => form.values.name}</FormConsumer>
+                    <FormConsumer>{({values}) => values.name}</FormConsumer>
                 </div>
             </FormProvider>
         </div>
