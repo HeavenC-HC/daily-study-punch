@@ -1,10 +1,13 @@
 import { createForm } from "@formily/core";
-// import { Field, FieldContext, FormConsumer, FormProvider, useParentForm } from "@formily/react";
-import { observer } from "@formily/reactive-react";
-import { Field, FieldContext, FormConsumer, FormProvider, useParentForm } from "./components/my-formily/react";
-// import {FormItem, Input, Submit} from "@formily/antd";
+import { observable, Tracker } from '@formily/reactive';
+import { observer } from './components/my-formily/reactive-react';
 import { FormItem, Input, Submit } from "./components/my-formily/antd";
+// import {FormItem, Input, Submit} from "@formily/antd";
+// import { Field, FieldContext, FormConsumer, FormProvider, useParentForm } from "@formily/react";
+// import { observer } from "@formily/reactive-react";
+import { Field, FieldContext, FormConsumer, FormProvider, useParentForm } from "./components/my-formily/react";
 
+console.info(observer)
 export {
     createForm,
     // react
@@ -20,5 +23,7 @@ export {
     FormItem,
     Input,
     Submit,
+    observable,
+    Tracker,
 };
 

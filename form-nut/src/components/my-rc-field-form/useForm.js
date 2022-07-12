@@ -6,7 +6,6 @@ class FormStore {
         this.store = {};
         this.fieldEntities = [];
         this.callbacks = {};
-
     }
 
     setCallbacks = callbacks => {
@@ -50,7 +49,6 @@ class FormStore {
 
     validate = () => {
         let err = [];
-        
         // 简版校验
         this.fieldEntities.forEach(entity => {
             const {name, rules} = entity.props;
@@ -60,7 +58,6 @@ class FormStore {
                 err.push({[name]: rule.message, value})
             }
         })
-
         return err;
     }
 

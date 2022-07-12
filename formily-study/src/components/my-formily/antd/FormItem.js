@@ -1,7 +1,7 @@
 import { FieldContext, observer } from '@/which';
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 
-
+console.info(observer)
 
 const FormItem = observer(({children}) => {
     const field = useContext(FieldContext)

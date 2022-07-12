@@ -16,7 +16,6 @@ function Form({children, form, onFinish, onFinishFailed}, ref) {
                 e.preventDefault();
                 formInstance.submit();
             }}
-            
         >
             <FieldContext.Provider value={formInstance} >
                 {children}
