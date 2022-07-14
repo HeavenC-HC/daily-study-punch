@@ -1,8 +1,11 @@
 
-function createStore(reducer) {
+function createStore(reducer, enhancer) {
     let currentState;
     let currentListeners = [];
 
+    if(enhancer){
+        return enhancer(createStore)(reducer)
+    }
 
 
     function subscribe(listener){
