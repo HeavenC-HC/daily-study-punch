@@ -1,12 +1,12 @@
-// import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 // import promise from 'redux-promise';
 import isPromise from 'is-promise';
-import { applyMiddleware, createStore } from "../redux-nut";
+// import { applyMiddleware, combineReducers, createStore } from "../redux-nut";
 // import logger from 'redux-logger';
 // import thunk from 'redux-thunk';
 
 
-function countReducer(state = 0, action) {
+export function countReducer(state = 0, action) {
   switch (action.type) {
     case "ADD":
       return state + 1;
@@ -17,12 +17,27 @@ function countReducer(state = 0, action) {
   }
 }
 
-const store = createStore(countReducer, applyMiddleware(promise, thunk, logger));
+function countReducer1(state = 0, action) {
+  switch (action.type) {
+    case "ADD":
+      return state + 1;
+    case "MINUS":
+      return state - 1;
+    default:
+      return state;
+  }
+}
+
+const store = createStore(combineReducers({
+  count: countReducer,
+  count1: countReducer1,
+}), applyMiddleware( thunk));//promise,  logger
 
 export default store;
 
 
 function logger({getState, dispatch}){
+  console.info('11')
   return next => action => {
     console.info(next)
     console.info(action)
@@ -51,9 +66,10 @@ function thunk({getState, dispatch}){
 
 function promise({getState, dispatch}){
   return next => action => {
-    console.info(isPromise(action))
     if(isPromise(action)){
       action.then(dispatch)
+    }else{
+
     }
   }
 }

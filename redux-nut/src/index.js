@@ -1,7 +1,8 @@
 import { createRoot } from "react-dom/client";
-
+import { Provider } from 'react-redux';
 import App from "./App";
 import "./index.less";
+import store from './store';
 
 /* 
 function f1(arg) {
@@ -33,4 +34,8 @@ function compose(...funs){
     return funs.reduce((a, b) => (...arg) =>  a(b(...arg)))
 } */
 
-const root = createRoot(document.getElementById("root")).render(<App />);
+const root = createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
