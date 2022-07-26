@@ -1,7 +1,8 @@
 // import ReduxPage from "./pages/ReduxPage";
 // import HooksPage from './pages/HooksPage';
 
-import ReactReduxPage from "./pages/ReactReduxPage";
+// import ReactReduxPage from "./pages/ReactReduxPage";
+import ReactReduxHookPage from "./pages/ReactReduxHookPage";
 
 
 export default function App(props) {
@@ -10,7 +11,9 @@ export default function App(props) {
     <div>
       {/* <ReduxPage /> */}
       {/* <HooksPage /> */}
-      <ReactReduxPage omg='omg' />
+      {/* <ReactReduxPage omg='omg' /> */}
+      <ReactReduxHookPage />
+      
     </div>
   );
 }

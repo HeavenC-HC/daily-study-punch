@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { connect } from 'react-redux';
+import { connect } from '../react-redux-nut';
+// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '../redux-nut';
 
 export default connect(
   // mapStateToProps,
@@ -12,15 +14,17 @@ export default connect(
     count
   }) */
   //mapDispatchToProps
-  /* ,{
+/*   ,{
     add: () => ({type: 'ADD'})
   } */
   ,(dispatch) => {
     let creators = {
-      add: () => ({type: 'ADD'})
+      add: () => ({type: 'ADD'}),
+      minus: () => ({type: 'MINUS'})
     }
 
-    creators = bindActionCreators(creators)
+    creators = bindActionCreators(creators, dispatch)
+    console.info(creators)
     return ({
       dispatch,
       ...creators
@@ -29,13 +33,13 @@ export default connect(
 )(class ReactReduxPage extends Component {
 
   render() {
-    const {count, dispatch} = this.props;
+    const {count, dispatch, add} = this.props;
     console.info(this.props)
     return (
       <div>
         <h3>ReactReduxPage</h3>
         <button onClick={()=>{dispatch({type: 'ADD'})}}>dispatch: {count}</button>
-        <button onClick={()=>{dispatch({type: 'ADD'})}}>add: {count}</button>
+        <button onClick={add}>add: {count}</button>
       </div>
     )
   }
