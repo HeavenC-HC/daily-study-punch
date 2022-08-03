@@ -31,9 +31,6 @@ function connect(mpaStateToprops, mapDispatchToprops) {
         const {getState, dispatch, subscribe} = store;
         const forceUpdate = useForceUpdate();
 
-
-       
-
         // useLayoutEffect(()=>{
         //     const unsubscribe = subscribe(() => {
         //         forceUpdate();

@@ -67,9 +67,9 @@ function thunk({getState, dispatch}){
 function promise({getState, dispatch}){
   return next => action => {
     if(isPromise(action)){
-      action.then(dispatch)
-    }else{
-
+      return action.then(dispatch)
     }
+
+    return next(action)
   }
 }
