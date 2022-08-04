@@ -1,6 +1,6 @@
 import React from 'react';
 // import { BrowserRouter as Router, Link, Navigate, Outlet, Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { BrowserRouter as Router, Link, Route, Routes } from './mini-react-router';
+import { BrowserRouter as Router, Link, Outlet, Route, Routes } from './mini-react-router';
 
 function App(props) {
   return (
@@ -17,6 +17,7 @@ function App(props) {
             </Route> */}
             {/* <Route path='*' element={<NoMatch />} /> */}
           </Route>
+          <Route path='/product1' element={<Product />} />
         </Routes>
       </Router>
     </div>
@@ -33,7 +34,7 @@ function Layout(){
       <Link to='/'>首页</Link>
       <Link to='/product'>商品</Link>
 
-      {/* <Outlet /> */}
+      <Outlet />
     </div>
   )
 }
