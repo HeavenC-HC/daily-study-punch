@@ -1,80 +1,63 @@
-import { useContext } from "react";
-import { NavigationContext, RouteContext } from "./Context";
-import Outlet from "./Outlet";
-import { normalizePathname } from "./untils";
+import React from "react";
+import { matchPath, matchRoutes } from 'react-router-dom';
+import { NavigationContext, RouteContext } from './Context';
 
-export function useRoutes(routes) {
-    const location = useLocation();
-    const pathname = location.pathname;
-    return routes.map((route, index) => {
-        const match = pathname.startsWith(route.path);
-        if(match){
-            console.log(route);
-            if(route.children){
-                return route.children.map(child => {
-                    let m = normalizePathname(child.path) === pathname;
-                    return m &&
-                        <RouteContext.Provider
-                            key={index}
-                            value={{outlet: child.element}}
-                            children={
-                                route.element !== undefined ?
-                                route.element :
-                                <Outlet />
-                            }
-                        />
-                });
-            }else{
-                let m = normalizePathname(route.path) === pathname;
-                return m &&
-                    <RouteContext.Provider
-                        key={index}
-                        value={{outlet: route.element}}
-                        children={
-                            route.element !== undefined ?
-                            route.element :
-                            <Outlet />
-                        }
-                    />
-            }
-        }
-        return match &&
-            route.children.map(child => {
-                let m = normalizePathname(child.path) === pathname;
-                return m &&
-                    <RouteContext.Provider
-                        value={{outlet: child.element}}
-                        children={
-                            route.element !== undefined ?
-                            route.element :
-                            <Outlet />
-                        }
-                    />
-            });
-    })
-};
-
-export function useNavigate() {
-    const {navigator} = useContext(NavigationContext)
-    return navigator.push;
+export const useRoutes = (routes) => {
+    const {pathname} = useLocation();
+    let matchs = matchRoutes(routes, {pathname})
+    return renderMatches(matchs)
 }
 
-export function useLocation(props) {
-    const {location} = useContext(NavigationContext)
+const renderMatches = matchs => {
+    return matchs.reduceRight((outlet, match) => {
+        return <RouteContext.Provider children={match.route.element || outlet} value={{outlet, matchs}} />;
+    }, null)
+}
+
+export const useLocation = () => {
+    const {location} = React.useContext(NavigationContext)
     return location;
 }
 
-//渲染chuildren
-export function useOutLet(props) {
-    const  {outlet} = useContext(RouteContext)
+export const useNavigate = () => {
+    const {navigator} = React.useContext(NavigationContext)
+    const navigate = (to, options = {}) => {
+        console.info(options)
+        if(typeof to === 'number'){
+            navigator.go(to);
+            return;
+        }
+        return (!!options.replace ? navigator.replace : navigator.push)(to, options.state);
+    }
+    return navigate;
+}
+
+export const useParams = () => {
+    const {matchs} = React.useContext(RouteContext);
+    return matchs ? matchs[matchs.length - 1].params : {};
+}
+
+export const useOutlet = () => {
+    const {outlet} = React.useContext(RouteContext);
     return outlet;
 }
 
-export function useParams(props) {
-    return (
-        <div>
-        </div>
+export const useResolvedPath = (to) => {
+    let { matches } = React.useContext(RouteContext);
+    let { pathname } = useLocation();
+    let routePathnamesJson = JSON.stringify(
+        matches.map((match) => match.pathnameBase)
     );
+
+    return React.useMemo(
+        () => ({ pathname: to, hash: "", search: "" }), //resolveTo(to, JSON.parse(routePathnamesJson), locationPathname),
+        [routePathnamesJson, pathname]
+      );
+}
+
+export const useMatch = (pattern) => {
+    const {pathname} = useLocation();
+    return React.useMemo(() => matchPath(pattern, pathname), [pathname, pattern]);
 }
 
 

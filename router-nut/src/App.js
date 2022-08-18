@@ -1,39 +1,58 @@
-import React from 'react';
-// import { BrowserRouter as Router, Link, Navigate, Outlet, Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { BrowserRouter as Router, Link, Outlet, Route, Routes } from './mini-react-router';
+import React from "react";
+// import { BrowserRouter as Router, Navigate, NavLink, Outlet, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
+import './App.css';
+import {
+  AuthProvider,
+  useAuth
+} from './auth';
+import { BrowserRouter as Router, Link, Navigate, Outlet, Route, Routes, useLocation, useMatch, useNavigate, useParams, useResolvedPath } from './mini-react-router';
 
-function App(props) {
+function App() {
   return (
-    <div>
-      {/* <Link></Link> */}
+    <AuthProvider>
       <Router>
         <Routes>
-          {/* <Route index element={<Home />} /> */}
-          <Route path='/' element={<Layout />} >
+          <Route path='/' element={<Layout />}>
             <Route path='/' element={<Home />} />
-            <Route path='product' element={<Product />} />
-            {/* <Route path='product' element={<Product />} >
+            <Route path='product' element={<Product />} >
               <Route path=':id' element={<ProductDetail />} />
-            </Route> */}
-            {/* <Route path='*' element={<NoMatch />} /> */}
+            </Route>
+            <Route path='user' element={<RequireUser><User /></RequireUser>} />
+            <Route path='login' element={<Login />} />
+            <Route path='*' element={<NoMatch />} />
           </Route>
-          <Route path='/product1' element={<Product />} />
         </Routes>
       </Router>
-    </div>
+    </AuthProvider>
+
   );
 }
 
 export default App;
 
+const CustomLink = ({ children, to, ...props }) => {
+  // return <NavLink to={to} {...options} style={({isActive})=> ({color: isActive ? 'red' : 'black'})} />
+  let resolved = useResolvedPath(to);
+  let match = useMatch({ path: resolved.pathname, end: true });
+
+  return (
+    <Link
+      style={{ color: match ? "red" : "#333" }}
+      to={to}
+      {...props}
+      children={children}
+    />
+  );
+}
+
 
 function Layout(){
   return (
     <div>
-      <h1>Layout</h1>
-      <Link to='/'>首页</Link>
-      <Link to='/product'>商品</Link>
-
+      <CustomLink to='/' >首页</CustomLink>
+      <CustomLink to='/product' >商品</CustomLink>
+      <CustomLink to='/user' >用户</CustomLink>
+      <CustomLink to='/login' >登录</CustomLink>
       <Outlet />
     </div>
   )
@@ -48,35 +67,89 @@ function Home(){
 }
 
 function Product(){
+  const navigate = useNavigate();
+
+  const gotoPage = () => {
+    navigate('/product/123')
+  }
   return (
     <div>
       <h1>Product</h1>
-      {/* <Link to='/product/123'>商品详情</Link>
-      <Outlet /> */}
-
+      <button onClick={gotoPage}>go to ProductDetail</button>
+      <Outlet />
     </div>
   )
 }
+
 function ProductDetail(){
-  // const params = useParams()
-  // let navigate = useNavigate()
-  // console.log(params);
+  const location = useLocation();
+
+
+  const params = useParams();
+
   return (
     <div>
-      <h1>Product详情:</h1>
-      {/* <h1>Product详情:{params.id}</h1> */}
-
-      {/* <button onClick={() => navigate('/')}>go home</button> */}
-
-      {/* <Navigate to='/' replace /> */}
+      <h1>ProductDetail:{params.id}</h1>
     </div>
   )
 }
 
-// function NoMatch(){
-//   return (
-//     <div>
-//       <h1>NoMatch</h1>
-//     </div>
-//   )
-// }
+function User(){
+  const {user, logout} = useAuth()
+  const navigate = useNavigate();
+  const userLogout = () => {
+    logout(()=>{
+      navigate('/')
+    })
+  }
+
+  return (
+    <div>
+      <h1>用户：{user}</h1>
+      <button onClick={userLogout}>退出登录</button>
+    </div>
+  )
+}
+
+
+function RequireUser({children}){
+  const {user} = useAuth()
+  const location = useLocation()
+
+  if(!user){
+    return <Navigate to={'/login'} state={{from: location}} replace={true} />
+  }
+
+  return children;
+}
+
+function Login(){
+  const [value, setValue] = React.useState('')
+  const {login} = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate();
+  const valueChange = e => {
+    setValue(e.target.value)
+  }
+
+  const userLogin = () => {
+    login(value, ()=>{
+      const path = location?.state?.from?.pathname ?? '/';
+      navigate(path, {replace: true})
+    })
+  }
+  return (
+    <div>
+      <input value={value} onChange={valueChange} />
+      <button onClick={userLogin}>登录</button>
+    </div>
+  )
+}
+
+function NoMatch(){
+  return (
+    <div>
+      <h1>NoMatch</h1>
+    </div>
+  )
+}

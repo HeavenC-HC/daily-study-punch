@@ -1,7 +1,7 @@
-import { useOutLet } from './hooks';
+import { useOutlet } from './hooks';
 
 function Outlet() {
-    return useOutLet();
+    return useOutlet();
 }
 
 export default Outlet;

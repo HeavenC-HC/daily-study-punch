@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Route(props) {
+function NavLink(props) {
     return (
         <div>
             
@@ -8,4 +8,4 @@ function Route(props) {
     );
 }
 
-export default Route;
+export default NavLink;

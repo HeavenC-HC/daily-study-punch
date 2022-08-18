@@ -1,23 +1,20 @@
 import { createBrowserHistory } from 'history';
-import { useLayoutEffect, useRef, useState } from 'react';
+import React from 'react';
 import Router from './Router';
-function BrowserRouter({children}) {
 
-    //组件卸载之前用
-    let historyRef = useRef();
+function BrowserRouter({children}) {
+    const historyRef = React.useRef(null)
     if(!historyRef.current){
         historyRef.current = createBrowserHistory();
     }
     const history = historyRef.current;
-    const [state, setState] = useState({location: history.location})
+    const [state, setState] = React.useState({location: history.location})
 
-    useLayoutEffect(() => {
-        history.listen(setState)
+    React.useLayoutEffect(()=>{
+        history.listen(setState);
     }, [history])
 
-    return (
-        <Router children={children} navigator={history} location={state.location} />
-    );
+    return <Router children={children} navigator={history} location={state.location} />;
 }
 
 export default BrowserRouter;

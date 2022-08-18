@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { NavigationContext } from './Context';
 
-function Router({navigator, children, location}) {
-    let navigationContext = useMemo(() => ({navigator, location}), [navigator, location])
+function Router({children, navigator, location}) {
+
+    const NavigateContext = React.useMemo(()=>({navigator, location}), [navigator, location])
+
     return (
-        <NavigationContext.Provider value={navigationContext}>
+        <NavigationContext.Provider value={NavigateContext}>
             {children}
         </NavigationContext.Provider>
     );
