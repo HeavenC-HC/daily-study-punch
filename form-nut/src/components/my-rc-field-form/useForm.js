@@ -62,7 +62,6 @@ class FormStore {
     }
 
     submit = () => {
-        console.log('submit');
         let err = this.validate();
         const {onFinish, onFinishFailed} = this.callbacks;
         if(err.length === 0){
