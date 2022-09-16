@@ -8,9 +8,6 @@ function compose(...funcs) {
    }
 
    return funcs.reduce((a, b) => (...arg) => {
-    // console.info(a)
-    // console.info(b)
-    // console.info(arg)
     return a(b(...arg))
    })
 }
