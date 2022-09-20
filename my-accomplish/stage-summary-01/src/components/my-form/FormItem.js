@@ -3,7 +3,7 @@ import { FormContext } from './context';
 
 function FormItem(props) {
     const {name, children} = props;
-    const [, forceUpdate] = React.useReducer(x => x + 1)
+    const [, forceUpdate] = React.useReducer(x => x + 1, 0)
     const form = useContext(FormContext);
     const {setListener, getFiledValue, setFieldsValue} = form;
 
@@ -15,17 +15,15 @@ function FormItem(props) {
     }, [])
 
     const getControlled = () => {
-        
-        console.log( form);
         return {
             value: getFiledValue(name),
             onChange: e => {
-                console.info(e)
+                console.info(e.target.value)
+                console.info(name)
                 setFieldsValue({
                     [name]: e.target.value
                 })
             }
-
         }
     }
 

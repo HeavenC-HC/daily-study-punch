@@ -2,14 +2,18 @@ import React from 'react';
 import { FormContext } from './context';
 import useForm from './useForm';
 
-function Form({children, form}) {
-    let formInstance = useForm(form);
+function Form({children, form, onFinish, onFinishFailed}, ref) {
+    let [formInstance] = useForm(form);
+
+    React.useImperativeHandle(ref, () => formInstance)
+
+
+    formInstance.setCallback({onFinish, onFinishFailed})
 
     const submit = e => {
         e.preventDefault();
+        formInstance.submit();
     }
-
-    console.log(formInstance);
 
     return (
         <form onSubmit={submit}>

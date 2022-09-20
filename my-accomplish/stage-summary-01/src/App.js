@@ -1,6 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Link, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { initLogin } from './action/index';
 import './index.less';
 import About from './pages/about';
 import Home from './pages/home';
@@ -39,11 +40,13 @@ function LayOut(){
 
 function RequireUser({children}){
 	const location = useLocation();
+	const dispatch = useDispatch();
 	const {loginStatus, callback} = useSelector(({login}) => login);
 
     React.useEffect(()=>{
         if(!loginStatus && callback){
             callback();
+			setTimeout(()=>{dispatch(initLogin())}, 300)
         }
     }, [loginStatus, callback])
 

@@ -10,43 +10,41 @@ import Form, { FormItem, useForm } from '../../components/my-form';
 const nameRules = { required: true, message: "请输入姓名！" };
 const passworRules = { required: true, message: "请输入密码！" };
 
-// export default class Login extends Component {
-//     formRef = React.createRef();
+/* export default class Login extends React.Component {
+    formRef = React.createRef();
 
-//     componentDidMount() {
-//         this.formRef.current.setFieldsValue({ username: "defalut" });
-//     }
-//     onFinish = (val) => {
-//          //sy-log
-//     };
-//     onFinishFailed = (val) => {
-//          //sy-log
-//     };
-//     render() {
-//         return (
-//             <div>
-//                 <h3>Login</h3>
-//                 <Form
-//                 ref={this.formRef}
-//                 onFinish={this.onFinish}
-//                 onFinishFailed={this.onFinishFailed}
-//                 >
-//                 <FormItem name="username" label="姓名" rules={[nameRules]}>
-//                     <Input placeholder="username placeholder" />
-//                 </FormItem>
-//                 <FormItem name="password" label="密码" rules={[passworRules]}>
-//                     <Input placeholder="password placeholder" />
-//                 </FormItem>
-//                 <FormItem>
-//                     <Button type="primary" size="large" htmlType="submit">
-//                     Submit
-//                     </Button>
-//                 </FormItem>
-//                 </Form>
-//             </div>
-//         );
-//     }
-// }
+    componentDidMount() {
+        this.formRef.current.setFieldsValue({ username: "defalut" });
+    }
+    onFinish = (val) => {
+         //sy-log
+    };
+    onFinishFailed = (val) => {
+        console.log("onFinishFailed", val); //sy-log
+    };
+    render() {
+        return (
+            <div>
+                <h3>Login</h3>
+                <Form
+                ref={this.formRef}
+                onFinish={this.onFinish}
+                onFinishFailed={this.onFinishFailed}
+                >
+                    <FormItem name="username" label="姓名" rules={[nameRules]}>
+                        <Input placeholder="username placeholder" />
+                    </FormItem>
+                    <FormItem name="password" label="密码" rules={[passworRules]}>
+                        <Input placeholder="password placeholder" />
+                    </FormItem>
+                    <Button type="primary" size="large" htmlType="submit">
+                    Submit
+                    </Button>
+                </Form>
+            </div>
+        );
+    }
+} */
 
 
 export default function Login(){
@@ -57,8 +55,39 @@ export default function Login(){
     const {loginStatus, callback} = useSelector(({login}) => login);
 
 
+    //有如下函数， 聚合成一个函数，并把第一个函数的返回值传递给下一个函数，如何处理
+    function f1(arg) {
+        console.log("f1", arg);
+        return arg;
+    }
+    function f2(arg) {
+        console.log("f2", arg);
+        return arg;
+    }
+    function f3(arg) {
+        console.log("f3", arg);
+        return arg;
+    }
+
+    function commpose(...funcs){
+        if(funcs.length === 0){
+            return arg => arg
+        }
+        if(funcs.length === 1){
+            return funcs[0]
+        }
+        return funcs.reduce((a, b) => (...arg) =>  {
+            console.log(a);
+            console.log(b);
+            console.log(arg);
+            return a(b(...arg))
+        })
+    }
+
+    commpose(f1, f2, f3)("omg")
+
     React.useEffect(()=>{
-        form.setFieldsValue({ username: "admin" });
+        form.setFieldsValue({ username: "admin", password: '111111' });
     }, [])
 
     React.useEffect(()=>{
@@ -71,14 +100,13 @@ export default function Login(){
          //sy-log
         dispatch(login(val, ()=>{
             const path = location?.state?.from?.pathname ?? '/';
-            navigate(path, {replace: true})
+            // navigate(path, {replace: true})
         }))
     };
 
     const onFinishFailed = (val) => {
-         //sy-log
+         console.log("onFinishFailed", val); //sy-log
     };
-
 
     return (
         <div>
@@ -88,17 +116,15 @@ export default function Login(){
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
-            <FormItem name="username" label="姓名" rules={[nameRules]}>
-                <Input placeholder="username placeholder" />
-            </FormItem>
-            <FormItem name="password" label="密码" rules={[passworRules]}>
-                <Input placeholder="password placeholder" />
-            </FormItem>
-            <FormItem>
+                <FormItem name="username" label="姓名" rules={[nameRules]}>
+                    <Input placeholder="username placeholder" />
+                </FormItem>
+                <FormItem name="password" label="密码" rules={[passworRules]}>
+                    <Input placeholder="password placeholder" />
+                </FormItem>
                 <Button type="primary" size="large" htmlType="submit">
-                    Submit
+                Submit
                 </Button>
-            </FormItem>
             </Form>
         </div>
     );

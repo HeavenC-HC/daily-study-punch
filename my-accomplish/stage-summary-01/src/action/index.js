@@ -27,3 +27,11 @@ export const logout = callback => {
     }
 }
 
+export const initLogin = () => {
+    return dispatch => {
+        dispatch({
+            type: LOGOUT,
+        })
+    }
+}
+

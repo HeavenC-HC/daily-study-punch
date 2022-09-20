@@ -1,6 +1,6 @@
 
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import Types from '../action/type';
 
@@ -51,3 +51,12 @@ const store = createStore(combineReducers({
 }), applyMiddleware(thunk, logger))
 
 export default store;
+
+
+function logger(dispatch){
+  return next => action => {
+    console.log(dispatch);
+    console.log(next);
+    console.log(action);
+  }
+}
