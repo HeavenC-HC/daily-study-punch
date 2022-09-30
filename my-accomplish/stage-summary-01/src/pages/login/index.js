@@ -1,9 +1,10 @@
 import { Button, Input } from "antd";
 import React from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from "react-router-dom";
 import { login } from '../../action';
 import Form, { FormItem, useForm } from '../../components/my-form';
+import store from "../../stroe";
 
 
 
@@ -51,7 +52,7 @@ export default function Login(){
     const location = useLocation()
     const navigate = useNavigate();
     const [form] = useForm()
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const {loginStatus, callback} = useSelector(({login}) => login);
 
 
@@ -77,13 +78,16 @@ export default function Login(){
             return funcs[0]
         }
         return funcs.reduce((a, b) => (...arg) =>  {
-            console.log(a);
-            console.log(b);
-            console.log(arg);
+            // console.log(a);
+            // console.log(b);
+            // console.log(arg);
             return a(b(...arg))
         })
     }
 
+    commpose()
+    commpose()("omg")
+    commpose(f1)("omg")
     commpose(f1, f2, f3)("omg")
 
     React.useEffect(()=>{
@@ -98,10 +102,15 @@ export default function Login(){
 
     const onFinish = (val) => {
          //sy-log
-        dispatch(login(val, ()=>{
-            const path = location?.state?.from?.pathname ?? '/';
-            // navigate(path, {replace: true})
-        }))
+        // dispatch(login(val, ()=>{
+        //     const path = location?.state?.from?.pathname ?? '/';
+        //     // navigate(path, {replace: true})
+        // }))
+
+        store.dispatch(login(val, ()=>{
+                const path = location?.state?.from?.pathname ?? '/';
+                // navigate(path, {replace: true})
+            }))
     };
 
     const onFinishFailed = (val) => {
