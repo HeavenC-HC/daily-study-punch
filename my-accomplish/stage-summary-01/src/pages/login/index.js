@@ -49,6 +49,9 @@ const passworRules = { required: true, message: "请输入密码！" };
 
 
 export default function Login(){
+
+    console.log(useSelector);
+
     const location = useLocation()
     const navigate = useNavigate();
     const [form] = useForm()

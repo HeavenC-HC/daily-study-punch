@@ -1,13 +1,11 @@
 
 function createStore(reducer, enchancer) {
+    let currentState;
+    let currentListeners = [];
 
-    console.log(reducer);
-    console.log(enchancer);
     if(enchancer){
         return enchancer(createStore)(reducer)
     }
-    let currentState;
-    let currentListeners = [];
 
     const getState = () => {
         return currentState;
@@ -25,7 +23,7 @@ function createStore(reducer, enchancer) {
         }
     }
 
-
+    dispatch({type: '@/REDUX/---------------'})
 
     return {
         getState,

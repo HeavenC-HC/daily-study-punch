@@ -3,7 +3,7 @@
 // import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import Types from '../action/type';
-import { applyMiddleware, createStore } from '../components/my-redux';
+import { applyMiddleware, combineReducers, createStore } from '../components/my-redux';
 
 const { LOGIN_SUCCESS, LOGIN_FAUIL, LOGOUT} = Types;
 
@@ -50,15 +50,27 @@ export function login(state = defaultState, action) {
 //     login: loginReducer,
 //     count1: countReducer1
 // }), applyMiddleware(thunk, logger))
-const store = createStore(login, applyMiddleware(thunk, logger))
+const store = createStore(combineReducers({
+  login
+}), applyMiddleware(thunk, logger))
 
 export default store;
 
 
-function logger(dispatch){
+function logger({dispatch, getState}){
   return next => action => {
-    console.log(dispatch);
-    console.log(next);
-    console.log(action);
+    console.info('-------------------------------')
+    console.info('执行了', action.type)
+
+    const preState = getState();
+    console.info('Pre State', preState)
+
+    let returnValue = next(action);
+
+    const nextState = getState();
+    console.info('Next State', nextState)
+    console.info('-------------------------------')
+
+    return returnValue;
   }
 }

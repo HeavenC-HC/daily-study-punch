@@ -1,7 +1,5 @@
 export default function combineReducers(reducers){
     return (state = {}, action) => {
-        console.log(reducers);
-        console.log(state, action);
         let nextState = {};
         let hasChanged = false;
 

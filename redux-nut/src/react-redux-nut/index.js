@@ -59,7 +59,6 @@ function connect(mpaStateToprops, mapDispatchToprops) {
     };
 }
 
-
 function useForceUpdate(){
     const [state, setState] = useState(0);
 
