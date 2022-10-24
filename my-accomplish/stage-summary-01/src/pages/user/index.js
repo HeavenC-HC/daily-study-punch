@@ -1,7 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../action';
+// import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../components/my-react-redux';
 
 function User(props) {
     const navigate = useNavigate();

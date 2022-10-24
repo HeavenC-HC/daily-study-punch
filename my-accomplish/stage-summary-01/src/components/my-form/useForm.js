@@ -45,7 +45,7 @@ class FormStore {
 
     submit = () => {
         let errs = this.validate()
-        console.log(errs);
+        
         const {onFinish, onFinishFailed} = this.callbacks;
         if(errs.length === 0){
             onFinish(this.getFieldsValue())

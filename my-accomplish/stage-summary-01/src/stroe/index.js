@@ -13,7 +13,6 @@ let defaultState = {
 }
 
 export function login(state = defaultState, action) {
-  console.info(action)
     switch (action.type) {
       case LOGIN_SUCCESS:
         return {

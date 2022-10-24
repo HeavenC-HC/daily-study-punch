@@ -1,7 +1,8 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Link, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { initLogin } from './action/index';
+import { useDispatch, useSelector } from './components/my-react-redux';
 import './index.less';
 import About from './pages/about';
 import Home from './pages/home';
@@ -10,6 +11,7 @@ import User from './pages/user';
 
 
 function App() {
+	console.log('222');
 	return (
 		<Router>
 			<Routes>
@@ -44,6 +46,7 @@ function RequireUser({children}){
 	const {loginStatus, callback} = useSelector(({login}) => login);
 
     React.useEffect(()=>{
+		console.log(loginStatus);
         if(!loginStatus && callback){
             callback();
 			setTimeout(()=>{dispatch(initLogin())}, 300)
