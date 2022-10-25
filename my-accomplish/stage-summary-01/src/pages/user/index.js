@@ -1,5 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '../../components/my-router';
 import { logout } from '../../action';
 // import { useDispatch } from 'react-redux';
 import { useDispatch } from '../../components/my-react-redux';

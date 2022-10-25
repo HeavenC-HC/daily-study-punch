@@ -22,7 +22,6 @@ export const useLocation = () => {
 export const useNavigate = () => {
     const {navigator} = React.useContext(NavigationContext)
     const navigate = (to, options = {}) => {
-        console.info(options)
         if(typeof to === 'number'){
             navigator.go(to);
             return;

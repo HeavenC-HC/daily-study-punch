@@ -1,7 +1,8 @@
 import { Button, Input } from "antd";
 import React from "react";
 // import { connect, useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "../../components/my-router";
 import { bindActionCreators } from 'redux';
 import { login } from '../../action';
 import Form, { FormItem, useForm } from '../../components/my-form';
